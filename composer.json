@@ -2,7 +2,7 @@
 	"name": "vanchelo/laravel-grouped-widgets",
 	"type": "library",
 	"description": "Laravel Grouped Widgets",
-	"keywords": ["laravel","widget","widgets"],
+	"keywords": ["laravel","widget","widgets","groups"],
 	"homepage": "https://github.com/vanchelo/Laravel-Grouped-Widgets",
 	"license": "MIT",
 	"authors": [
