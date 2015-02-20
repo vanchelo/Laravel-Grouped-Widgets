@@ -60,7 +60,7 @@ class Manager
 	 */
 	public function registerIf($name, $abstract)
 	{
-		if ( ! $this->collection->has($name))
+		if ( ! $this->has($name))
 		{
 			$this->register($name, $abstract);
 		}
@@ -141,7 +141,18 @@ class Manager
 	 */
 	protected function resolved($name)
 	{
-		return $this->collection->has($name) && $this->collection->get($name)->resolved();
+		return $this->has($name) && $this->collection->get($name)->resolved();
+	}
+
+	/**
+	 * Determine if a widget exists in the collection by name
+	 *
+	 * @param $name Widget name
+	 * @return bool
+	 */
+	public function has($name)
+	{
+		return $this->collection->has($name);
 	}
 
 	/**
@@ -194,7 +205,7 @@ class Manager
 	 */
 	function __call($name, $arguments)
 	{
-		return $this->collection->has($name) ? $this->make($name, $arguments) : null;
+		return $this->has($name) ? $this->make($name, $arguments) : null;
 	}
 
 }
