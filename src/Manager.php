@@ -39,7 +39,7 @@ class Manager
 	 * Register a widget
 	 *
 	 * @param string $name
-	 * @param string $abstract
+	 * @param string|callable $abstract
 	 * @return $this
 	 */
 	public function register($name, $abstract)
@@ -55,7 +55,7 @@ class Manager
 	 * Register a widget if it hasn't already been registered
 	 *
 	 * @param string $name
-	 * @param string $abstract
+	 * @param string|callable $abstract
 	 * @return $this
 	 */
 	public function registerIf($name, $abstract)
@@ -77,7 +77,7 @@ class Manager
 		if ( ! $this->resolved($name))
 		{
 			/** @var Widget $widget */
-			$widget = $this->collection->get($name);
+			$widget = $this->get($name);
 
 			$widget->instance($this->app->make($widget->abstract));
 
@@ -89,7 +89,7 @@ class Manager
 			$this->events->fire('widget.resolved: ' . $name, compact('widget'));
 		}
 
-		return $this->collection->get($name);
+		return $this->get($name);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Manager
 	 */
 	protected function isInvokable($widget)
 	{
-		return method_exists($widget, '__invoke');
+		return is_callable($widget);
 	}
 
 	/**
@@ -141,18 +141,29 @@ class Manager
 	 */
 	protected function resolved($name)
 	{
-		return $this->has($name) && $this->collection->get($name)->resolved();
+		return $this->has($name) && $this->get($name)->resolved();
 	}
 
 	/**
 	 * Determine if a widget exists in the collection by name
 	 *
-	 * @param $name Widget name
+	 * @param string $name Widget name
 	 * @return bool
 	 */
 	public function has($name)
 	{
 		return $this->collection->has($name);
+	}
+
+	/**
+	 * Get widget from collection by name
+	 *
+	 * @param string $name Widget name
+	 * @return Widget
+	 */
+	public function get($name)
+	{
+		return $this->collection->get($name);
 	}
 
 	/**
@@ -187,6 +198,8 @@ class Manager
 		$output = [];
 
 		$group = $this->getGroup($name);
+
+		if ($group->isEmpty()) return null;
 
 		foreach ($group as $key => $value)
 		{

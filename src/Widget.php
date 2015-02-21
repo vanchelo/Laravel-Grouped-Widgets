@@ -27,7 +27,7 @@ class Widget {
 	 */
 	public $order = 0;
 
-	function __construct($name, $abstract)
+	function __construct($name, $abstract = null)
 	{
 		$this->name = $name;
 		$this->abstract = $abstract;
@@ -69,7 +69,22 @@ class Widget {
 
 	public static function create($name, $abstract)
 	{
-		return new self($name, $abstract);
+		$widget = new self($name);
+
+		if (is_callable($abstract))
+		{
+			$widget->instance($abstract);
+		}
+		elseif (is_string($abstract))
+		{
+			$widget->abstract = $abstract;
+		}
+		else
+		{
+			throw new \InvalidArgumentException('Second argument must be a string or closure');
+		}
+
+		return $widget;
 	}
 
 }
