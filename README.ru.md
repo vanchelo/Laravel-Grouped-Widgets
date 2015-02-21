@@ -43,6 +43,18 @@ Widget::register('block', 'App\Widgets\Block')->group('left')->order(99);
 ```
 Widget::registerIf('block', 'App\Widgets\Block')->group('left')->order(99);
 ```
+В качестве второго аргумента метода `register`и `registerIf` может быть замыкание или экземпляр класса с реализованным методом `__invoke`:
+
+```
+// замыкание
+Widget::register('block', function ()
+{
+	return '<div>Block</div>';
+});
+
+// Экземпляр класса
+Widget::register('block', new App\Widgets\Block);
+```
 
 По умолчанию все виджеты имею группу `default`.
 
@@ -124,6 +136,18 @@ class Block extends AbstractWidget
 {!! Widget::make('block', ['Главное меню', 'menu.top']) !!}
 ```
 
+### Методы
+
+- Widget::register
+- Widget::registerIf
+- Widget::has
+- Widget::get
+- Widget::getCollection
+- Widget::getGroup
+- Widget::group
+- Widget::make
+- Widget::{widget_name}
+
 ### События
 
 При первом обращении к виджету срабатывает событие `widget.resolved: {widget_name}`, где доступен один параметр
@@ -166,6 +190,8 @@ class Block
 	function __invoke()
 	{
 		return $this->happy();
+		/* или так */
+		// return call_user_func_array([$this, 'happy'], func_get_args());
 	}
 }
 ```
