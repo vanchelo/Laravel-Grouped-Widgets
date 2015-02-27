@@ -24,7 +24,7 @@ class Widget
     public $abstract;
 
     /**
-     * @var
+     * @var callable
      */
     protected $instance;
 
@@ -38,6 +38,10 @@ class Widget
      */
     public $order = 0;
 
+    /**
+     * @param                 $name
+     * @param string|callable $abstract
+     */
     function __construct($name, $abstract = null)
     {
         $this->name = $name;
@@ -45,7 +49,10 @@ class Widget
     }
 
     /**
+     * Set group name
+     *
      * @param string $name
+     *
      * @return $this
      */
     public function group($name)
@@ -56,7 +63,10 @@ class Widget
     }
 
     /**
+     * Set order
+     *
      * @param $order
+     *
      * @return $this
      */
     public function order($order)
@@ -66,20 +76,36 @@ class Widget
         return $this;
     }
 
+    /**
+     * Determine if the given widget has been resolved
+     *
+     * @return bool
+     */
     public function resolved()
     {
         return $this->instance !== null;
     }
 
+    /**
+     * @param callable $instance
+     *
+     * @return callable
+     */
     public function instance(callable $instance = null)
     {
         if (is_null($instance)) {
             return $this->instance;
         }
 
-        $this->instance = $instance;
+        return $this->instance = $instance;
     }
 
+    /**
+     * @param $name
+     * @param $abstract
+     *
+     * @return Widget
+     */
     public static function create($name, $abstract)
     {
         $widget = new self($name);

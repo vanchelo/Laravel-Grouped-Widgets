@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vanchelo\GroupedWidgets;
+namespace Vanchelo\GroupedWidgets\Illuminate;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -32,7 +32,22 @@ class WidgetsServiceProvider extends ServiceProvider
         $this->app->singleton('Vanchelo\GroupedWidgets\Manager');
         $this->app->bind('grouped-widgets', 'Vanchelo\GroupedWidgets\Manager');
 
-        $this->commands('Vanchelo\GroupedWidgets\Console\Commands\WidgetMakeCommand');
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\Container',
+            'Vanchelo\GroupedWidgets\Illuminate\Container'
+        );
+
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\EventDispatcher',
+            'Vanchelo\GroupedWidgets\Illuminate\EventDispatcher'
+        );
+
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\Collection',
+            'Vanchelo\GroupedWidgets\Illuminate\Collection'
+        );
+
+        $this->commands('Vanchelo\GroupedWidgets\Illuminate\Console\Commands\WidgetMakeCommand');
     }
 
     public function provides()

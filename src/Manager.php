@@ -11,9 +11,9 @@
 
 namespace Vanchelo\GroupedWidgets;
 
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Events\Dispatcher as Events;
-use Illuminate\Support\Collection;
+use Vanchelo\GroupedWidgets\Contracts\Container;
+use Vanchelo\GroupedWidgets\Contracts\EventDispatcher;
+use Vanchelo\GroupedWidgets\Contracts\Collection;
 
 class Manager
 {
@@ -23,9 +23,9 @@ class Manager
     private $app;
 
     /**
-     * @var Events Events dispatcher
+     * @var EventDispatcher Events dispatcher
      */
-    private $events;
+    private $event;
 
     /**
      * @var Collection
@@ -33,17 +33,14 @@ class Manager
     private $collection;
 
     /**
-     * @param Container  $app
-     * @param Events     $events
-     * @param Collection $collection
+     * @param Container       $app
+     * @param EventDispatcher $events
+     * @param Collection      $collection
      */
-    function __construct(
-            Container $app,
-            Events $events,
-            Collection $collection
-    ) {
+    function __construct(Container $app, EventDispatcher $events, Collection $collection)
+    {
         $this->app = $app;
-        $this->events = $events;
+        $this->event = $events;
         $this->collection = $collection;
     }
 
@@ -52,6 +49,7 @@ class Manager
      *
      * @param string          $name
      * @param string|callable $abstract
+     *
      * @return $this
      */
     public function register($name, $abstract)
@@ -68,6 +66,7 @@ class Manager
      *
      * @param string          $name
      * @param string|callable $abstract
+     *
      * @return $this
      */
     public function registerIf($name, $abstract)
@@ -80,7 +79,10 @@ class Manager
     }
 
     /**
+     * Resolve a widget by name from the collection
+     *
      * @param $name
+     *
      * @return Widget
      */
     protected function resolve($name)
@@ -91,11 +93,11 @@ class Manager
 
             $widget->instance($this->app->make($widget->abstract));
 
-            if ( ! $this->isInvokable($widget->instance())) {
+            if ( ! $this->isInvokable($widget)) {
                 $this->throwNotInvokableException($widget);
             }
 
-            $this->events->fire('widget.resolved: ' . $name, compact('widget'));
+            $this->event->fire('widget.resolved: ' . $name, compact('widget'));
         }
 
         return $this->get($name);
@@ -107,36 +109,43 @@ class Manager
     protected function throwNotInvokableException($widget)
     {
         throw new \RuntimeException(
-                sprintf('Widget "%s" is not invokable', $widget->abstract)
+            sprintf('Widget "%s" is not invokable', $widget->abstract)
         );
     }
 
     /**
-     * @param $widget
+     * @param Widget $widget
+     *
      * @return bool
      */
-    protected function isInvokable($widget)
+    protected function isInvokable(Widget $widget)
     {
-        return is_callable($widget);
+        return is_callable($widget->instance());
     }
 
     /**
+     * Resolve and execute widget by name
+     *
      * @param string $name
      * @param array  $data
+     *
      * @return mixed
      */
     public function make($name, $data = [])
     {
         $widget = $this->resolve($name);
 
-        $this->events->fire('widget.rendering: ' . $name, compact('widget', 'data'));
+        $this->event->fire('widget.rendering: ' . $name, compact('widget', 'data'));
 
         return $this->execute($widget, $data);
     }
 
     /**
+     * Execute widget
+     *
      * @param Widget $widget
      * @param array  $data
+     *
      * @return mixed
      */
     protected function execute($widget, $data = [])
@@ -145,7 +154,10 @@ class Manager
     }
 
     /**
+     * Determine if the given widget has been resolved
+     *
      * @param string $name
+     *
      * @return bool
      */
     protected function resolved($name)
@@ -154,9 +166,10 @@ class Manager
     }
 
     /**
-     * Determine if a widget exists in the collection by name
+     * Determine if a widget exists in the widgets collection by name
      *
      * @param string $name Widget name
+     *
      * @return bool
      */
     public function has($name)
@@ -165,9 +178,10 @@ class Manager
     }
 
     /**
-     * Get widget from collection by name
+     * Get widget from the widgets collection by name
      *
      * @param string $name Widget name
+     *
      * @return Widget
      */
     public function get($name)
@@ -176,6 +190,8 @@ class Manager
     }
 
     /**
+     * Get the widgets collection
+     *
      * @return Collection
      */
     public function getCollection()
@@ -184,7 +200,10 @@ class Manager
     }
 
     /**
+     * Get group by name from the widgets collection
+     *
      * @param $name
+     *
      * @return Collection
      */
     public function getGroup($name)
@@ -197,8 +216,11 @@ class Manager
     }
 
     /**
+     * Get and render group by name
+     *
      * @param string $name
      * @param string $delimiter
+     *
      * @return string
      */
     public function group($name, $delimiter = '')
@@ -215,14 +237,17 @@ class Manager
             $output[] = $this->make($key);
         }
 
-        $this->events->fire('widget.group.rendering: ' . $name, compact('group', 'output'));
+        $this->event->fire('widget.group.rendering: ' . $name, compact('group', 'output'));
 
         return implode($delimiter, $output);
     }
 
     /**
+     * Handle dynamic method calls
+     *
      * @param string $name
      * @param array  $arguments
+     *
      * @return mixed|null
      */
     function __call($name, $arguments)

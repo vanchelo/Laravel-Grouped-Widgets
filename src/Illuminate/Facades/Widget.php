@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Vanchelo\GroupedWidgets;
+namespace Vanchelo\GroupedWidgets\Illuminate\Facades;
 
-use Vanchelo\GroupedWidgets\Contracts\Widget;
+use Illuminate\Support\Facades\Facade;
 
-abstract class AbstractWidget implements Widget
+class Widget extends Facade
 {
-    abstract public function render();
-
-    function __invoke()
+    protected static function getFacadeAccessor()
     {
-        return call_user_func_array([$this, 'render'], func_get_args());
+        return 'grouped-widgets';
     }
 }

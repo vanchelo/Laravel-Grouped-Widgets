@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vanchelo\GroupedWidgets\Console\Commands;
+namespace Vanchelo\GroupedWidgets\Illuminate\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
