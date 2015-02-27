@@ -33,6 +33,11 @@ class WidgetsServiceProvider extends ServiceProvider
         $this->app->bind('grouped-widgets', 'Vanchelo\GroupedWidgets\Manager');
 
         $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\Collection',
+            'Illuminate\Support\Collection'
+        );
+
+        $this->app->bind(
             'Vanchelo\GroupedWidgets\Contracts\Container',
             'Vanchelo\GroupedWidgets\Illuminate\Container'
         );
