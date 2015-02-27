@@ -11,8 +11,6 @@
 
 namespace Vanchelo\GroupedWidgets\Contracts;
 
-use Closure;
-
 interface Collection
 {
     /**
@@ -20,6 +18,7 @@ interface Collection
      *
      * @param  mixed $key
      * @param  mixed $value
+     *
      * @return void
      */
     public function put($key, $value);
@@ -28,6 +27,7 @@ interface Collection
      * Determine if an item exists in the collection by key.
      *
      * @param  mixed $key
+     *
      * @return bool
      */
     public function has($key);
@@ -37,6 +37,7 @@ interface Collection
      *
      * @param  mixed $key
      * @param  mixed $default
+     *
      * @return mixed
      */
     public function get($key, $default = null);
@@ -44,17 +45,19 @@ interface Collection
     /**
      * Run a filter over each of the items.
      *
-     * @param  Closure $callback
+     * @param  callable $callback
+     *
      * @return static
      */
-    public function filter(Closure $callback);
+    public function filter(callable $callback);
 
     /**
-     * Sort the collection using the given Closure.
+     * Sort the collection using the given callback.
      *
-     * @param  Closure|string $callback
-     * @param  int            $options
-     * @param  bool           $descending
+     * @param  callable|string $callback
+     * @param  int             $options
+     * @param  bool            $descending
+     *
      * @return $this
      */
     public function sortBy($callback, $options = SORT_REGULAR, $descending = false);
