@@ -1,25 +1,30 @@
 {
-	"name": "vanchelo/laravel-grouped-widgets",
-	"type": "library",
-	"description": "Laravel Grouped Widgets",
-	"keywords": ["laravel","widget","widgets","groups"],
-	"homepage": "https://github.com/vanchelo/Laravel-Grouped-Widgets",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Brezhnev Ivan"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"illuminate/support": "5.0.*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Vanchelo\\GroupedWidgets\\": "src/"
-		},
-		"files": [
-			"src/helpers.php"
-		]
-	}
+    "name": "vanchelo/laravel-grouped-widgets",
+    "type": "library",
+    "description": "Laravel Grouped Widgets",
+    "keywords": [
+        "laravel",
+        "widget",
+        "widgets",
+        "groups"
+    ],
+    "homepage": "https://github.com/vanchelo/Laravel-Grouped-Widgets",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Brezhnev Ivan",
+            "email": "brezhnev.ivan@yahoo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "5.0.*",
+        "illuminate/console": "5.0.*",
+        "illuminate/contracts": "5.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vanchelo\\GroupedWidgets\\": "src/"
+        }
+    }
 }

@@ -1,16 +1,17 @@
-<?php namespace {{namespace}};
+<?php
+namespace {{namespace}};
 
 use Vanchelo\GroupedWidgets\AbstractWidget;
 
 class {{class}} extends AbstractWidget
 {
-	function __construct()
-	{
-		//
-	}
+    function __construct()
+    {
+        //
+    }
 
-	public function render()
-	{
-		//
-	}
+    public function render()
+    {
+        //
+    }
 }

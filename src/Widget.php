@@ -1,90 +1,97 @@
-<?php namespace Vanchelo\GroupedWidgets;
+<?php
 
-class Widget {
+/**
+ * This file is part of Laravel Grouped Widgets package.
+ *
+ * (c) Brezhnev Ivan <brezhnev.ivan@yahoo.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-	/**
-	 * @var string
-	 */
-	public $name;
+namespace Vanchelo\GroupedWidgets;
 
-	/**
-	 * @var string
-	 */
-	public $abstract;
+class Widget
+{
+    /**
+     * @var string
+     */
+    public $name;
 
-	/**
-	 * @var
-	 */
-	protected $instance;
+    /**
+     * @var string
+     */
+    public $abstract;
 
-	/**
-	 * @var string
-	 */
-	public $group = 'default';
+    /**
+     * @var
+     */
+    protected $instance;
 
-	/**
-	 * @var int
-	 */
-	public $order = 0;
+    /**
+     * @var string
+     */
+    public $group = 'default';
 
-	function __construct($name, $abstract = null)
-	{
-		$this->name = $name;
-		$this->abstract = $abstract;
-	}
+    /**
+     * @var int
+     */
+    public $order = 0;
 
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function group($name)
-	{
-		$this->group = $name;
+    function __construct($name, $abstract = null)
+    {
+        $this->name = $name;
+        $this->abstract = $abstract;
+    }
 
-		return $this;
-	}
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function group($name)
+    {
+        $this->group = $name;
 
-	/**
-	 * @param $order
-	 * @return $this
-	 */
-	public function order($order)
-	{
-		$this->order = (int) $order;
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @param $order
+     * @return $this
+     */
+    public function order($order)
+    {
+        $this->order = (int) $order;
 
-	public function resolved()
-	{
-		return $this->instance !== null;
-	}
+        return $this;
+    }
 
-	public function instance(callable $instance = null)
-	{
-		if (is_null($instance)) return $this->instance;
+    public function resolved()
+    {
+        return $this->instance !== null;
+    }
 
-		$this->instance = $instance;
-	}
+    public function instance(callable $instance = null)
+    {
+        if (is_null($instance)) {
+            return $this->instance;
+        }
 
-	public static function create($name, $abstract)
-	{
-		$widget = new self($name);
+        $this->instance = $instance;
+    }
 
-		if (is_callable($abstract))
-		{
-			$widget->instance($abstract);
-		}
-		elseif (is_string($abstract))
-		{
-			$widget->abstract = $abstract;
-		}
-		else
-		{
-			throw new \InvalidArgumentException('Second argument must be a string or closure');
-		}
+    public static function create($name, $abstract)
+    {
+        $widget = new self($name);
 
-		return $widget;
-	}
+        if (is_callable($abstract)) {
+            $widget->instance($abstract);
+        } elseif (is_string($abstract)) {
+            $widget->abstract = $abstract;
+        } else {
+            throw new \InvalidArgumentException('Second argument must be a string or closure');
+        }
 
+        return $widget;
+    }
 }
