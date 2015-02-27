@@ -8,11 +8,11 @@ composer require "vanchelo/laravel-grouped-widgets"
 
 В конфигурационный файл `config/app.php` в секцию `providers` добавить строку:
 ```
-'Vanchelo\GroupedWidgets\WidgetsServiceProvider',
+'Vanchelo\GroupedWidgets\Illuminate\WidgetsServiceProvider',
 ```
 и в секцию `aliases` след. строку, для комфортной работы с библиотекой:
 ```
-'Widget' => 'Vanchelo\GroupedWidgets\Facades\Widget',
+'Widget' => 'Vanchelo\GroupedWidgets\Illuminate\Facades\Widget',
 ```
 
 ## Использование
@@ -28,24 +28,28 @@ php artisan make:widget Block
 В качестве имени виджета старайтесь не использовать `.-`, а также другие символы которые запрещены использовать в именах методов PHP, но придерживайтесь этого правила только в том случае, если хотите обращаться к виджетам в такой манере `Widget::block()`. Доступны и другие способы доступа к виджету, о них расскажу чуть ниже.
  
 Простая регистрация виджета:
-```
+```php
 Widget::register('block', 'App\Widgets\Block');
 ```
+
 Альтернативный вариант:
-```
+```php
 widget()->register('block', 'App\Widgets\Block');
 ```
+
 С указанием группы виджета и положения:
-```
+```php
 Widget::register('block', 'App\Widgets\Block')->group('left')->order(99);
 ```
+
 Регистрация виджета только, если виджет с таким именем не был зарегистрирован ранее:
-```
+```php
 Widget::registerIf('block', 'App\Widgets\Block')->group('left')->order(99);
 ```
+
 В качестве второго аргумента метода `register`и `registerIf` может быть замыкание или экземпляр класса с реализованным методом `__invoke`:
 
-```
+```php
 // замыкание
 Widget::register('block', function ()
 {
@@ -70,31 +74,32 @@ Widget::register('block', new App\Widgets\Block);
 ```
 {!! widget()->group('default') !!}
 ```
+
 Так же вторым параметром метода `group` можно передать разделитель при выводе виджетов группы, например:
-```
+```php
 {!! Widget::group('left', '<hr>') !!}
 ```
+
 Выбирайте понравившейся вам варинат.
 
 Если метод `group` выводил отрендеренный результат, то для того чтобы получить коллекцию виджетов определенной группы есть след. метод:
-```
+```php
 /** @var Collection $widgets */
 $widgets = Widget::getGroup('left');
 ```
 
 Метод для получения коллекции всех зарегистрированных виджетов:
-```
+```php
 $widgets = Widget::getCollection();
 ```
 
 Метод для проверки наличия виджета в коллекции по имени:
-```
+```php
 Widget::has('menu');
 ```
 
 Пример виджета
-
-```
+```php
 <?php namespace App\Widgets;
 
 use Vanchelo\Widgets\AbstractWidget;
@@ -124,7 +129,6 @@ class Block extends AbstractWidget
 В методе `render` виджета вы можете указать необходимые аргументы для управления выводом.
 
 Например:
-
 ```
 {!! Widget::block() !!}
 {!! Widget::block('Верхнее меню') !!}
@@ -174,10 +178,8 @@ class Block extends AbstractWidget
 ```
 `group` - группа с виджетами, `output` - массив отрендеренных виджетов.
 
-
 Конечно же вы можете написать и самостоятельно виджет, вот такой, например:
-
-```
+```php
 <?php namespace App\Widgets;
 
 class Block
@@ -195,6 +197,7 @@ class Block
 	}
 }
 ```
+
 Метод `__invoke` на данный момент обязателен, т.к. при рендере виджета вызывается именно он. Возможно в будущем я пересмотрю это поведение.
 
 [Здесь](https://github.com/vanchelo/Laravel-Grouped-Widgets/blob/master/src/AbstractWidget.php) можно посмотреть как реализован абстрактный виджет и написать свой по аналогии или ипользовать команду `php artisan make:widget WidgetName` для создания виджета из заготовки.
