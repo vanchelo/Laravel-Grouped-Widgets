@@ -33,23 +33,18 @@ class WidgetsServiceProvider extends ServiceProvider
         $this->app->bind('grouped-widgets', 'Vanchelo\GroupedWidgets\Manager');
 
         $this->app->bind(
-            'Vanchelo\GroupedWidgets\Contracts\Collection',
-            'Illuminate\Support\Collection'
-        );
-
-        $this->app->bind(
             'Vanchelo\GroupedWidgets\Contracts\Container',
-            'Vanchelo\GroupedWidgets\Illuminate\Container'
+            'Illuminate\Container\Container'
         );
 
         $this->app->bind(
             'Vanchelo\GroupedWidgets\Contracts\EventDispatcher',
-            'Vanchelo\GroupedWidgets\Illuminate\EventDispatcher'
+            'Illuminate\Events\Dispatcher'
         );
 
         $this->app->bind(
             'Vanchelo\GroupedWidgets\Contracts\Collection',
-            'Vanchelo\GroupedWidgets\Illuminate\Collection'
+            'Illuminate\Support\Collection'
         );
 
         $this->commands('Vanchelo\GroupedWidgets\Illuminate\Console\Commands\WidgetMakeCommand');
