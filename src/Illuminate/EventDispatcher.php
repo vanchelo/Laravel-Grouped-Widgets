@@ -14,4 +14,28 @@ namespace Vanchelo\GroupedWidgets\Illuminate;
 use Illuminate\Events\Dispatcher as IlluminateEventDispatcher;
 use Vanchelo\GroupedWidgets\Contracts\EventDispatcher as EventDispatcherContract;
 
-class EventDispatcher extends IlluminateEventDispatcher implements EventDispatcherContract {}
+class EventDispatcher implements EventDispatcherContract
+{
+    /**
+     * @var IlluminateEventDispatcher
+     */
+    private $dispatcher;
+
+    function __construct(IlluminateEventDispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Fire an event and call the listeners.
+     *
+     * @param  string|object $event
+     * @param  mixed         $payload
+     *
+     * @return array|null
+     */
+    public function fire($event, $payload = [])
+    {
+        return $this->dispatcher->fire($event, $payload);
+    }
+}
