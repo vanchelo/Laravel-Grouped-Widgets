@@ -3,7 +3,7 @@
 ## Установка
 Подключаем пакет через composer:
 ```
-composer require "vanchelo/laravel-grouped-widgets"
+composer require "vanchelo/laravel-grouped-widgets:dev-develop"
 ```
 
 В конфигурационный файл `config/app.php` в секцию `providers` добавить строку:
@@ -200,4 +200,4 @@ class Block
 
 Метод `__invoke` на данный момент обязателен, т.к. при рендере виджета вызывается именно он. Возможно в будущем я пересмотрю это поведение.
 
-[Здесь](https://github.com/vanchelo/Laravel-Grouped-Widgets/blob/master/src/AbstractWidget.php) можно посмотреть как реализован абстрактный виджет и написать свой по аналогии или ипользовать команду `php artisan make:widget WidgetName` для создания виджета из заготовки.
+[Здесь](https://github.com/vanchelo/Laravel-Grouped-Widgets/blob/develop/src/AbstractWidget.php) можно посмотреть как реализован абстрактный виджет и написать свой по аналогии или ипользовать команду `php artisan make:widget WidgetName` для создания виджета из заготовки.
