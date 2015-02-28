@@ -29,23 +29,10 @@ class WidgetsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerContractsBindings();
+
         $this->app->singleton('Vanchelo\GroupedWidgets\Manager');
         $this->app->bind('grouped-widgets', 'Vanchelo\GroupedWidgets\Manager');
-
-        $this->app->bind(
-            'Vanchelo\GroupedWidgets\Contracts\Container',
-            'Illuminate\Container\Container'
-        );
-
-        $this->app->bind(
-            'Vanchelo\GroupedWidgets\Contracts\EventDispatcher',
-            'Illuminate\Events\Dispatcher'
-        );
-
-        $this->app->bind(
-            'Vanchelo\GroupedWidgets\Contracts\Collection',
-            'Illuminate\Support\Collection'
-        );
 
         $this->commands('Vanchelo\GroupedWidgets\Illuminate\Console\Commands\WidgetMakeCommand');
     }
@@ -53,5 +40,23 @@ class WidgetsServiceProvider extends ServiceProvider
     public function provides()
     {
         return ['grouped-widgets'];
+    }
+
+    private function registerContractsBindings()
+    {
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\Container',
+            'Vanchelo\GroupedWidgets\Illuminate\Container'
+        );
+
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\EventDispatcher',
+            'Vanchelo\GroupedWidgets\Illuminate\EventDispatcher'
+        );
+
+        $this->app->bind(
+            'Vanchelo\GroupedWidgets\Contracts\Collection',
+            'Vanchelo\GroupedWidgets\Illuminate\Collection'
+        );
     }
 }
