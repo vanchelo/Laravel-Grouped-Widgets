@@ -15,10 +15,12 @@ use Vanchelo\GroupedWidgets\Contracts\Widget;
 
 abstract class AbstractWidget implements Widget
 {
-    abstract public function render();
-
     function __invoke()
     {
+        if ( ! method_exists($this, 'render')) {
+            return null;
+        }
+
         return call_user_func_array([$this, 'render'], func_get_args());
     }
 }
